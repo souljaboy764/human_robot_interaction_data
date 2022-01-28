@@ -58,19 +58,22 @@ def visualize_skeleton(data, variant=None, action=None, save_path=None):
 	data = normal_skeleton(data)
 	
 	ax.view_init(0, -90)
-	ax.grid(False)
+	# ax.grid(False)
 	ax.set_xlabel('X')
 	ax.set_ylabel('Z')
 	ax.set_zlabel('Y')
 	# ax.set_axis_bgcolor('white')w
 	for frame_idx in range(data.shape[0]):
 		ax.cla()
+		ax.set_xlabel('X')
+		ax.set_ylabel('Z')
+		ax.set_zlabel('Y')
 		ax.set_facecolor('none')
 		ax.set_xlim3d([-1, 1])
 		ax.set_ylim3d([-1, 1])
 		ax.set_zlim3d([-0.8, 0.8])
 
-		ax.axis('off')
+		# ax.axis('off')
 		if variant is not None and action is not None:
 			# ax.set_title('_'.join(variant.split('/')[0]) + " " + action)
 			ax.set_title(variant + " " + action)
@@ -79,7 +82,7 @@ def visualize_skeleton(data, variant=None, action=None, save_path=None):
 		x = data[frame_idx, :, 0]
 		y = data[frame_idx, :, 1]
 		z = data[frame_idx, :, 2]
-		ax.scatter(x[joints], z[joints], y[joints], color='r', marker='o')
+		ax.scatter(x, z, y, color='r', marker='o')
 		
 		# for part in body:
 		for part in connections:

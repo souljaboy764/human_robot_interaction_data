@@ -25,7 +25,7 @@ for action in ['hand_wave', 'hand_shake', 'rocket', 'parachute']:
 			if (s[1]-s[0] >400):
 				in_traj = data_p[s[0]:s[1], joints_dic['RightHand']]
 				grid = F.affine_grid(theta, torch.Size([1, 3, 2, new_length]), align_corners=True)
-				traj = torch.tensor(data_p[s[0]:s[1], joints_dic['RightHand']]).to(device).unsqueeze(0).transpose(1,2).unsqueeze(2)
+				traj = torch.Tensor(in_traj).to(device).unsqueeze(0).transpose(1,2).unsqueeze(2)
 				traj = torch.concat([traj, torch.zeros_like(traj)], dim=2) # batch, trajectory_dim, 2, trajectory_size
 				window = F.grid_sample(traj.type(torch.float32), grid, align_corners=True)[0, :, 0].transpose(0,1).cpu().detach().numpy()
 				data_actions[action].append(window)

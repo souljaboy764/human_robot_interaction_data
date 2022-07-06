@@ -59,12 +59,15 @@ def visualize_skeleton(data, variant=None, action=None, save_path=None):
 	
 	ax.view_init(0, -90)
 	# ax.grid(False)
+	ax.set_xlabel('X')
+	ax.set_ylabel('Z')
+	ax.set_zlabel('Y')
 	# ax.set_axis_bgcolor('white')w
 	for frame_idx in range(data.shape[0]):
 		ax.cla()
 		ax.set_xlabel('X')
-		ax.set_ylabel('Y')
-		ax.set_zlabel('Z')
+		ax.set_ylabel('Z')
+		ax.set_zlabel('Y')
 		ax.set_facecolor('none')
 		ax.set_xlim3d([-1, 1])
 		ax.set_ylim3d([-1, 1])
@@ -79,14 +82,14 @@ def visualize_skeleton(data, variant=None, action=None, save_path=None):
 		x = data[frame_idx, :, 0]
 		y = data[frame_idx, :, 1]
 		z = data[frame_idx, :, 2]
-		ax.scatter(x, y, z, color='r', marker='o')
+		ax.scatter(x, z, y, color='r', marker='o')
 		
 		# for part in body:
 		for part in connections:
 			x_plot = x[part]
 			y_plot = y[part]
 			z_plot = z[part]
-			ax.plot(x_plot, y_plot, z_plot, color='b')
+			ax.plot(x_plot, z_plot, y_plot, color='b')
 		
 
 		if save_path is not None:

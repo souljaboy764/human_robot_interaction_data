@@ -1,5 +1,6 @@
 import csv
 import numpy as np
+ 
 
 joints = ['Root', 'Hips', 'LeftThigh', 'LeftShin', 'LeftFoot', 'LeftToe',
 		  'LeftToeTip', 'RightThigh', 'RightShin', 'RightFoot', 'RightToe',
@@ -67,10 +68,10 @@ def extract_robot_indices(names):
 def read_data(path):
 	data_p = []
 	data_q = []
-	times = []
 	with open(path, 'rt') as csvfile:
 		reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
 		c = 0
+		times = []
 		for row in reader:
 			if c == 0:
 				names = row[0].split(',')
@@ -86,7 +87,7 @@ def read_data(path):
 	data_p = np.array(data_p)
 	data_q = np.array(data_q)
 	times = np.array(times)
-	return  data_p, data_q, times
+	return  data_p, data_q, names, times
 
 
 

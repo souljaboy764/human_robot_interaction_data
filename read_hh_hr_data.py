@@ -146,3 +146,11 @@ def downsample(data, downsample_len):
 	traj = traj[:, :, 0].cpu().detach().numpy() # joints, dims, downsample_len
 	return traj.transpose(2,0,1) # downsample_len, joints, dims
 
+def read_hri_data(action, src_dir = './hr/'):
+	import os
+	data_file_p1 = os.path.join(src_dir, 'p1', action+'_s1_1.csv')
+	data_file_r2 = os.path.join(src_dir, 'r2', action+'.csv')
+	_, data_r2, _, _, _, _, _, _ = read_robot_data(data_file_r2)
+	data_p1, _, _, _ = read_data(data_file_p1)
+	data_p1 = downsample(data_p1, len(data_r2))
+	return data_p1, data_r2

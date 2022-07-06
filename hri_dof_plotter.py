@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 
 # -----------------------------------
-# 3D Skeleton Marker Publisher
+# HRI Data Plotter
 # Author: souljaboy764
-# Date: 2021/5/23
+# Date: 2022/07/06
 # -----------------------------------
 
 import numpy as np

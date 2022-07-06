@@ -1,6 +1,6 @@
 import csv
 import numpy as np
- 
+
 
 joints = ['Root', 'Hips', 'LeftThigh', 'LeftShin', 'LeftFoot', 'LeftToe',
 		  'LeftToeTip', 'RightThigh', 'RightShin', 'RightFoot', 'RightToe',
@@ -124,3 +124,25 @@ def read_robot_data(path):
 	data_c_R = np.array(data_c_R)
 	times = np.array(times)
 	return  data_p_L, data_p_R, data_v_L, data_v_R, data_c_L, data_c_R, names, times
+
+
+def downsample(data, downsample_len):
+	"""
+	data: Input trajectory of Shape (LEN x NUM_JOINTS x JOINT_DIMS)
+	"""
+	import torch
+	from torch.nn.functional import grid_sample, affine_grid
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+	seq_len, joints, dims = data.shape
+	theta = torch.Tensor(np.array([[[1,0,0.], [0,1,0]]])).to(device).repeat(joints,1,1)
+
+	traj = data.transpose(1,2,0) # joints, dims, seq_len
+	traj = torch.Tensor(traj).to(device).unsqueeze(2) # joints, dims, 1 seq_len
+	traj = torch.concat([traj, torch.zeros_like(traj)], dim=2) # joints, dims, 2 seq_len
+	
+	grid = affine_grid(theta, torch.Size([joints, dims, 2, downsample_len]), align_corners=True)
+	traj = grid_sample(traj.type(torch.float32), grid, align_corners=True) # joints, dims, 2 new_length
+	traj = traj[:, :, 0].cpu().detach().numpy() # joints, dims, downsample_len
+	return traj.transpose(2,0,1) # downsample_len, joints, dims
+

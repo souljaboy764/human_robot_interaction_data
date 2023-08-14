@@ -10,9 +10,6 @@ import numpy as np
 from read_hh_hr_data import *
 import os
 import matplotlib.pyplot as plt
-import torch
-from torch.nn.functional import grid_sample, affine_grid
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 src_dir = './hr'
 actions = ['hand_wave', 'hand_shake', 'rocket', 'parachute']
